@@ -716,14 +716,12 @@
                 <string>#comment</string>
               </dict>
               <dict>
-                <key>match</key>
-                <string>[a-zA-Z_][a-zA-Z0-9_]*\s*(?=:)</string>
-                <key>name</key>
-                <string>function.argument.teal</string>
+                <key>include</key>
+                <string>#function-arg-name</string>
               </dict>
               <dict>
                 <key>include</key>
-                <string>#optional</string>
+                <string>#function-arg-type</string>
               </dict>
               <dict>
                 <key>include</key>
