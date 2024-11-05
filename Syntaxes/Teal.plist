@@ -35,6 +35,10 @@
           </dict>
           <dict>
             <key>include</key>
+            <string>#variable-annotation</string>
+          </dict>
+          <dict>
+            <key>include</key>
             <string>#constant</string>
           </dict>
           <dict>
@@ -104,6 +108,18 @@
             <string>comment.teal</string>
             <key>match</key>
             <string>--.*$</string>
+          </dict>
+        </array>
+      </dict>
+      <key>optional</key>
+      <dict>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>name</key>
+            <string>storage.modifier.optional.teal</string>
+            <key>match</key>
+            <string>(\?)</string>
           </dict>
         </array>
       </dict>
@@ -316,6 +332,10 @@
           </dict>
           <dict>
             <key>include</key>
+            <string>#interface-block</string>
+          </dict>
+          <dict>
+            <key>include</key>
             <string>#record-block</string>
           </dict>
           <dict>
@@ -422,15 +442,23 @@
         <array>
           <dict>
             <key>begin</key>
-            <string>\bfunction\b</string>
+            <string>(\bfunction\b)</string>
             <key>end</key>
-            <string>\bend\b</string>
-            <key>captures</key>
+            <string>(\bend\b)</string>
+            <key>beginCaptures</key>
             <dict>
               <key>0</key>
               <dict>
                 <key>name</key>
                 <string>keyword.declaration.function.teal</string>
+              </dict>
+            </dict>
+            <key>endCaptures</key>
+            <dict>
+              <key>0</key>
+              <dict>
+                <key>name</key>
+                <string>keyword.control.teal</string>
               </dict>
             </dict>
             <key>patterns</key>
@@ -593,6 +621,10 @@
                 <key>include</key>
                 <string>#comment</string>
               </dict>
+              <dict>
+                <key>include</key>
+                <string>#optional</string>
+              </dict>
             </array>
           </dict>
           <dict>
@@ -609,6 +641,10 @@
               <dict>
                 <key>include</key>
                 <string>#comment</string>
+              </dict>
+              <dict>
+                <key>include</key>
+                <string>#optional</string>
               </dict>
             </array>
           </dict>
@@ -659,6 +695,43 @@
           </dict>
         </array>
       </dict>
+      <key>extendable-type</key>
+      <dict>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>begin</key>
+            <string>(\bis\b)\s*(&lt;\s*)?([a-zA-Z_][a-zA-Z0-9_, ]*\s*)?(&gt;\s*)?</string>
+            <key>end</key>
+            <string>(\bwhere\b)</string>
+            <key>beginCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>keyword.control.is.teal</string>
+              </dict>
+              <key>3</key>
+              <dict>
+                <key>name</key>
+                <string>entity.other.inherited-class.teal</string>
+              </dict>
+            </dict>
+            <key>endCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>keyword.control.where.teal</string>
+              </dict>
+            </dict>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#type</string>
+          </dict>
+        </array>
+      </dict>
       <key>function-type</key>
       <dict>
         <key>patterns</key>
@@ -688,10 +761,12 @@
                 <string>#comment</string>
               </dict>
               <dict>
-                <key>match</key>
-                <string>[a-zA-Z_][a-zA-Z0-9_]*\s*(?=:)</string>
-                <key>name</key>
-                <string>function.argument.teal</string>
+                <key>include</key>
+                <string>#function-arg-name</string>
+              </dict>
+              <dict>
+                <key>include</key>
+                <string>#function-arg-type</string>
               </dict>
               <dict>
                 <key>include</key>
@@ -934,13 +1009,104 @@
           </dict>
         </array>
       </dict>
+      <key>interface-block</key>
+      <dict>
+        <key>begin</key>
+        <string>(\binterface\b)</string>
+        <key>end</key>
+        <string>(\bend\b)</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>0</key>
+          <dict>
+            <key>name</key>
+            <string>storage.type.interface.teal</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
+        <dict>
+          <key>0</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.control.teal</string>
+          </dict>
+        </dict>
+        <key>name</key>
+        <string>statement.interface-block.teal</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#extendable-type</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#comment</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#enum-block</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#record-block</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#new-type-declaration</string>
+          </dict>
+          <dict>
+            <key>match</key>
+            <string>^\s*\buserdata\b</string>
+            <key>name</key>
+            <string>storage.type.userdata.teal</string>
+          </dict>
+          <dict>
+            <key>begin</key>
+            <string>^\s*\bmetamethod\b</string>
+            <key>end</key>
+            <string>:</string>
+            <key>beginCaptures</key>
+            <dict>
+              <key>0</key>
+              <dict>
+                <key>name</key>
+                <string>storage.type.metamethod.teal</string>
+              </dict>
+            </dict>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>include</key>
+                <string>#function-name</string>
+              </dict>
+            </array>
+          </dict>
+          <dict>
+            <key>match</key>
+            <string>^\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:</string>
+            <key>captures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>variable.other.teal</string>
+              </dict>
+            </dict>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#type</string>
+          </dict>
+        </array>
+      </dict>
       <key>record-block</key>
       <dict>
         <key>begin</key>
-        <string>\brecord\b</string>
+        <string>(\brecord\b)</string>
         <key>end</key>
-        <string>\bend\b</string>
-        <key>captures</key>
+        <string>(\bend\b)</string>
+        <key>beginCaptures</key>
         <dict>
           <key>0</key>
           <dict>
@@ -948,10 +1114,22 @@
             <string>storage.type.record.teal</string>
           </dict>
         </dict>
+        <key>endCaptures</key>
+        <dict>
+          <key>0</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.control.teal</string>
+          </dict>
+        </dict>
         <key>name</key>
         <string>statement.record-block.teal</string>
         <key>patterns</key>
         <array>
+          <dict>
+            <key>include</key>
+            <string>#extendable-type</string>
+          </dict>
           <dict>
             <key>include</key>
             <string>#comment</string>
@@ -1080,15 +1258,23 @@
       <key>enum-block</key>
       <dict>
         <key>begin</key>
-        <string>\benum\b</string>
+        <string>(\benum\b)</string>
         <key>end</key>
-        <string>\bend\b</string>
-        <key>captures</key>
+        <string>(\bend\b)</string>
+        <key>beginCaptures</key>
         <dict>
           <key>0</key>
           <dict>
             <key>name</key>
             <string>storage.type.enum.teal</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
+        <dict>
+          <key>0</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.control.teal</string>
           </dict>
         </dict>
         <key>patterns</key>
@@ -1184,10 +1370,18 @@
       <key>if-block</key>
       <dict>
         <key>begin</key>
-        <string>\bif\b</string>
+        <string>(\bif\b)</string>
         <key>end</key>
-        <string>\bend\b</string>
-        <key>captures</key>
+        <string>(\bend\b)</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>0</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.control.if.teal</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
         <dict>
           <key>0</key>
           <dict>
@@ -1211,15 +1405,23 @@
           </dict>
           <dict>
             <key>begin</key>
-            <string>\belseif\b</string>
+            <string>(\belseif\b)</string>
             <key>end</key>
-            <string>\bthen\b</string>
-            <key>captures</key>
+            <string>(\bthen\b)</string>
+            <key>beginCaptures</key>
             <dict>
               <key>0</key>
               <dict>
                 <key>name</key>
-                <string>keyword.control.teal</string>
+                <string>keyword.control.elseif.teal</string>
+              </dict>
+            </dict>
+            <key>endCaptures</key>
+            <dict>
+              <key>0</key>
+              <dict>
+                <key>name</key>
+                <string>keyword.control.then.teal</string>
               </dict>
             </dict>
             <key>name</key>
@@ -1247,10 +1449,18 @@
       <key>do-block</key>
       <dict>
         <key>begin</key>
-        <string>\bdo\b</string>
+        <string>(\bdo\b)</string>
         <key>end</key>
-        <string>\bend\b</string>
-        <key>captures</key>
+        <string>(\bend\b)</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>0</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.control.teal</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
         <dict>
           <key>0</key>
           <dict>
@@ -1271,10 +1481,18 @@
       <key>repeat-block</key>
       <dict>
         <key>begin</key>
-        <string>\brepeat\b</string>
+        <string>(\brepeat\b)</string>
         <key>end</key>
-        <string>\buntil\b</string>
-        <key>captures</key>
+        <string>(\buntil\b)</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>0</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.control.teal</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
         <dict>
           <key>0</key>
           <dict>
@@ -1295,10 +1513,18 @@
       <key>while-block</key>
       <dict>
         <key>begin</key>
-        <string>\bwhile\b</string>
+        <string>(\bwhile\b)</string>
         <key>end</key>
-        <string>\bend\b</string>
-        <key>captures</key>
+        <string>(\bend\b)</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>0</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.control.teal</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
         <dict>
           <key>0</key>
           <dict>
@@ -1353,10 +1579,18 @@
       <key>for-block</key>
       <dict>
         <key>begin</key>
-        <string>\bfor\b</string>
+        <string>(\bfor\b)</string>
         <key>end</key>
-        <string>\bend\b</string>
-        <key>captures</key>
+        <string>(\bend\b)</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>0</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.control.teal</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
         <dict>
           <key>0</key>
           <dict>
@@ -1442,6 +1676,13 @@
         <string>\b(local|global)\b</string>
         <key>name</key>
         <string>storage.modifier.teal</string>
+      </dict>
+      <key>variable-annotation</key>
+      <dict>
+        <key>match</key>
+        <string>\&lt;\b(const|close|total)\b\&gt;</string>
+        <key>name</key>
+        <string>storage.modifier.annotation.teal</string>
       </dict>
       <key>type-annotation</key>
       <dict>
