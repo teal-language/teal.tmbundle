@@ -35,6 +35,10 @@
           </dict>
           <dict>
             <key>include</key>
+            <string>#variable-annotation</string>
+          </dict>
+          <dict>
+            <key>include</key>
             <string>#constant</string>
           </dict>
           <dict>
@@ -1536,6 +1540,13 @@
         <string>\b(local|global)\b</string>
         <key>name</key>
         <string>storage.modifier.teal</string>
+      </dict>
+      <key>variable-annotation</key>
+      <dict>
+        <key>match</key>
+        <string>\&lt;\b(const|close|total)\b\&gt;</string>
+        <key>name</key>
+        <string>storage.modifier.annotation.teal</string>
       </dict>
       <key>type-annotation</key>
       <dict>
